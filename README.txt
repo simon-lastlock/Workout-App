@@ -22,3 +22,10 @@ To use on iPhone:
 4. Launch Progression from the Home Screen.
 
 Existing v1 local workout/progression data is migrated automatically when possible.
+
+
+V3 UPDATE
+- Completed exercises keep today's actual reps visible.
+- Today's target remains visible after completion.
+- Next workout target is shown separately and no longer overwrites today's reps.
+- Completion toast now says 'Next workout' for clarity.
