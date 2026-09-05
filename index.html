@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Progression" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <title>Progression</title>
+  <style>
+    :root{--bg:#0b0b0c;--card:#171719;--card2:#111112;--muted:#8d8d93;--text:#f5f5f7;--line:#2c2c2f;--accent:#fff;--good:#9be59b;--warn:#f0c36a}
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
+    header{position:sticky;top:0;z-index:4;backdrop-filter:blur(18px);background:rgba(11,11,12,.88);padding:calc(env(safe-area-inset-top) + 12px) 18px 12px;border-bottom:1px solid var(--line)}
+    h1{font-size:27px;margin:0 0 3px}.sub,.small{color:var(--muted);font-size:12px}.hidden{display:none!important}
+    main{max-width:720px;margin:0 auto;padding:18px}.hero{padding:18px 0 8px}.hero h2{font-size:30px;margin:0 0 8px}.hero p{color:var(--muted);margin:0;line-height:1.45}
+    .day-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.day-card{border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--text);padding:18px;text-align:left}.day-card strong{display:block;font-size:19px;margin-bottom:5px}.day-card span{color:var(--muted);font-size:12px;line-height:1.35;display:block}
+    .sessionbar{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:14px}.sessiontop{display:flex;justify-content:space-between;align-items:center;gap:12px}.sessiontitle{font-weight:850}.duration{font-variant-numeric:tabular-nums;font-size:20px;font-weight:850}.progress-track{height:5px;background:#29292c;border-radius:99px;overflow:hidden;margin-top:10px}.progress-fill{height:100%;background:#f5f5f7;width:0;transition:width .2s}
+    .exercise{background:var(--card);border:1px solid var(--line);border-radius:18px;margin:0 0 14px;padding:16px}.exercise.done{opacity:.62}.exercise.done .exercise-head h2:after{content:"  Completed";font-size:11px;color:var(--good);font-weight:800}
+    .exercise-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.exercise h2{font-size:18px;margin:0 0 4px}.meta{color:var(--muted);font-size:12px}.weight{font-size:18px;font-weight:800;white-space:nowrap}
+    .previous-strip{font-size:12px;color:var(--muted);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:10px}.previous-strip strong{color:#d9d9dc}
+    .sets{display:grid;gap:8px}.set-head,.set-row{display:grid;grid-template-columns:40px 1fr 1fr 70px;gap:7px;align-items:center}.set-head{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;text-align:center}.set-row .set-label{color:var(--muted);font-size:12px}
+    input{width:100%;border:1px solid var(--line);background:#0f0f10;color:var(--text);border-radius:11px;padding:11px 8px;font-size:16px;text-align:center}.target{text-align:center;font-size:13px;font-weight:750}.prev{text-align:center;color:var(--muted);font-size:12px;white-space:nowrap}.prev.better{color:var(--good)}
+    .actions{display:flex;gap:8px;margin-top:12px}.primary,.secondary,.danger{border-radius:12px;padding:12px 14px;border:0;font-weight:800}.primary{background:var(--accent);color:#111;flex:1}.secondary{background:#242426;color:var(--text);border:1px solid var(--line)}.danger{background:#2a1717;color:#ffb3b3;border:1px solid #512626}.primary:disabled{opacity:.45}
+    .progress-note{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:9px 11px;margin-top:10px;font-size:12px;line-height:1.4}.good{color:var(--good)}
+    .finish{margin:18px 0 4px;width:100%;padding:15px}.history-item{border-bottom:1px solid var(--line);padding:12px 0}.history-item:last-child{border-bottom:0}.history-date{font-weight:800}.section-title{margin:22px 0 10px;font-size:17px}
+    .summary-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.stat{background:var(--card2);border-radius:12px;padding:12px;text-align:center}.stat strong{display:block;font-size:20px}.stat span{font-size:10px;color:var(--muted);text-transform:uppercase}
+    .restbox{position:fixed;left:50%;transform:translateX(-50%);bottom:82px;z-index:7;width:min(680px,calc(100% - 24px));background:rgba(26,26,28,.96);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:17px;padding:10px 12px;box-shadow:0 8px 28px rgba(0,0,0,.35)}.restmain{display:flex;align-items:center;gap:10px}.resttime{font-variant-numeric:tabular-nums;font-size:22px;font-weight:900;min-width:62px}.restlabel{flex:1}.restlabel strong{display:block;font-size:12px}.restlabel span{font-size:10px;color:var(--muted)}.restbuttons{display:flex;gap:6px}.mini{border:1px solid var(--line);background:#242426;color:var(--text);border-radius:10px;padding:9px 10px;font-weight:800;font-size:12px}
+    nav{position:fixed;bottom:0;left:0;right:0;background:rgba(18,18,19,.96);border-top:1px solid var(--line);padding:9px 14px calc(env(safe-area-inset-bottom) + 9px);display:flex;justify-content:center;gap:8px;z-index:6}nav button{max-width:220px;flex:1}
+    .settings-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}textarea{width:100%;min-height:140px;background:#0f0f10;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px}
+    .toast{position:fixed;top:calc(env(safe-area-inset-top) + 70px);left:50%;transform:translateX(-50%);z-index:20;background:#f5f5f7;color:#111;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:800;box-shadow:0 8px 26px rgba(0,0,0,.35);max-width:calc(100% - 32px);text-align:center}
+    @media(max-width:430px){.day-grid{grid-template-columns:1fr 1fr}.set-head,.set-row{grid-template-columns:34px 1fr 56px 57px}.exercise{padding:14px}.meta{font-size:11px}.weight{font-size:16px}}
+  </style>
+</head>
+<body>
+<header><h1>Progression</h1><div class="sub" id="headerSub">Strength + hypertrophy tracker</div></header>
+<main>
+  <section id="startView">
+    <div class="hero"><h2>Start Workout</h2><p>Choose today's session. Your timer, progression, and previous performance will load automatically.</p></div>
+    <div class="day-grid" id="dayGrid"></div>
+    <div id="resumeWrap" class="hidden"><button id="resumeBtn" class="primary finish">Resume Active Workout</button></div>
+    <div id="lastWorkout"></div>
+  </section>
+
+  <section id="workoutView" class="hidden">
+    <div class="sessionbar"><div class="sessiontop"><div><div class="sessiontitle" id="sessionTitle"></div><div class="small" id="sessionProgress"></div></div><div class="duration" id="duration">00:00</div></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div>
+    <div id="exerciseList"></div>
+    <button class="primary finish" id="finishBtn">Finish Workout</button>
+  </section>
+
+  <section id="summaryView" class="hidden"><div id="summaryContent"></div><button class="primary finish" id="summaryDone">Done</button></section>
+  <section id="historyView" class="hidden"><h2>Workout History</h2><div id="historyList"></div></section>
+  <section id="settingsView" class="hidden"><h2>Data</h2><p class="small">Everything is stored on this iPhone/browser using local storage.</p><div class="settings-row"><button class="secondary" id="exportBtn">Export Backup</button><button class="secondary" id="importBtn">Import Backup</button><button class="danger" id="resetBtn">Reset All Data</button></div><textarea id="backupBox" placeholder="Backup JSON appears here"></textarea></section>
+</main>
+
+<div id="restBox" class="restbox hidden"><div class="restmain"><div class="resttime" id="restTime">02:00</div><div class="restlabel"><strong id="restTitle">Rest</strong><span>Timer continues if you switch apps</span></div><div class="restbuttons"><button class="mini" id="restMinus">-30</button><button class="mini" id="restStop">Stop</button><button class="mini" id="restPlus">+30</button></div></div></div>
+<nav><button class="secondary" id="homeNav">Home</button><button class="secondary" id="workoutNav">Workout</button><button class="secondary" id="historyNav">History</button><button class="secondary" id="settingsNav">Data</button></nav>
+<div id="toast" class="toast hidden"></div>
+<script>
+const routine={
+"Upper A":[
+{name:"Bench Press",sets:3,min:5,max:7,weight:215,inc:5,mode:"balanced",rest:210},
+{name:"Chest-Supported Row",sets:3,min:8,max:12,weight:80,inc:5,mode:"balanced",rest:150},
+{name:"Seated Overhead Press",sets:3,min:8,max:12,weight:65,inc:5,mode:"balanced",rest:150},
+{name:"Dips",sets:2,min:6,max:12,weight:0,inc:5,mode:"bodyweight",rest:120},
+{name:"Pull-ups",sets:2,min:6,max:12,weight:0,inc:5,mode:"bodyweight",rest:120},
+{name:"Cable Lateral Raise",sets:3,min:12,max:20,weight:30,inc:5,mode:"balanced",rest:75},
+{name:"Incline DB Curl",sets:3,min:8,max:12,weight:30,inc:5,mode:"balanced",rest:90}],
+"Lower A":[
+{name:"Smith Bulgarian Split Squat",sets:3,min:8,max:12,weight:90,inc:5,mode:"balanced",rest:180},
+{name:"Lying Leg Curl",sets:3,min:8,max:12,weight:140,inc:5,mode:"balanced",rest:120},
+{name:"Leg Extension",sets:3,min:10,max:15,weight:130,inc:5,mode:"balanced",rest:90},
+{name:"Calf Raise",sets:3,min:8,max:15,weight:220,inc:5,mode:"balanced",rest:90},
+{name:"Hanging Leg Raise",sets:3,min:8,max:15,weight:0,inc:0,mode:"bodyweight",rest:60}],
+"Upper B":[
+{name:"Bench Press",sets:3,min:8,max:12,weight:175,inc:5,mode:"balanced",rest:180},
+{name:"Lat Pulldown",sets:3,min:8,max:12,weight:200,inc:5,mode:"balanced",rest:120},
+{name:"Seated Cable Row",sets:3,min:8,max:12,weight:50,inc:5,mode:"balanced",rest:120},
+{name:"Cable Lateral Raise",sets:3,min:12,max:20,weight:30,inc:5,mode:"balanced",rest:75},
+{name:"Incline Skullcrusher",sets:3,min:8,max:15,weight:65,inc:5,mode:"balanced",rest:90},
+{name:"Cable Curl",sets:3,min:10,max:15,weight:40,inc:5,mode:"balanced",rest:90}],
+"Lower B":[
+{name:"Leg Press",sets:3,min:8,max:12,weight:410,inc:10,mode:"balanced",rest:180},
+{name:"Romanian Deadlift",sets:3,min:6,max:10,weight:135,inc:5,mode:"balanced",rest:180},
+{name:"Smith Hip Thrust",sets:3,min:8,max:12,weight:180,inc:10,mode:"balanced",rest:150},
+{name:"Leg Curl",sets:3,min:8,max:12,weight:135,inc:5,mode:"balanced",rest:120},
+{name:"Calf Raise",sets:3,min:8,max:15,weight:230,inc:5,mode:"balanced",rest:90},
+{name:"Hanging Leg Raise",sets:3,min:8,max:15,weight:0,inc:0,mode:"bodyweight",rest:60}]};
+
+const KEY='progression-v2';
+let old=JSON.parse(localStorage.getItem('progression-v1')||'null');
+let state=JSON.parse(localStorage.getItem(KEY)||'null') || old || {day:'Upper A',exercises:{},history:[],sessions:[],activeSession:null,restEnd:null};
+state.sessions=state.sessions||[];state.activeSession=state.activeSession||null;state.restEnd=state.restEnd||null;state.exercises=state.exercises||{};state.history=state.history||[];
+function exKey(day,name){return `${day}::${name}`}
+function getExState(day,ex){const key=exKey(day,ex.name);if(!state.exercises[key])state.exercises[key]={weight:ex.weight,targets:Array(ex.sets).fill(ex.min),last:[]};return state.exercises[key]}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function fmtTime(sec){sec=Math.max(0,Math.floor(sec));return `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.add('hidden'),2200)}
+function weightLabel(ex,w){return ex.mode==='bodyweight'?(w>0?`BW + ${w} lb`:'Bodyweight'):`${w} lb`}
+function advanceTargets(targets,min,max){const t=[...targets];if(t.every(v=>v>=max))return{targets:Array(t.length).fill(min),complete:true};const low=Math.min(...t),i=t.indexOf(low);t[i]=Math.min(max,t[i]+1);return{targets:t,complete:false}}
+function evaluate(ex,es,reps){if(reps.some(Number.isNaN))return{ok:false,msg:'Enter reps for every set.'};if(!reps.every((v,i)=>v>=es.targets[i]))return{ok:true,msg:'Targets not fully reached. Same weight and targets next time.',progressed:false};const adv=advanceTargets(es.targets,ex.min,ex.max);if(adv.complete){if(ex.mode==='bodyweight'&&ex.inc===0)return{ok:true,msg:`Top reps reached. Repeat ${ex.max}s with clean reps.`,progressed:true,newTargets:Array(ex.sets).fill(ex.max)};return{ok:true,msg:`Top of range reached. Next time: +${ex.inc} lb and reset to ${ex.min}s.`,progressed:true,newWeight:es.weight+ex.inc,newTargets:adv.targets}}return{ok:true,msg:`Next target: ${adv.targets.join(' / ')}.`,progressed:true,newTargets:adv.targets}}
+function latestHistory(day,name,beforeTs){return state.history.find(x=>x.day===day&&x.name===name&&(!beforeTs||new Date(x.ts).getTime()<beforeTs))||null}
+
+function show(view){['startView','workoutView','summaryView','historyView','settingsView'].forEach(id=>document.getElementById(id).classList.add('hidden'));document.getElementById(view).classList.remove('hidden');if(view==='historyView')renderHistory();document.getElementById('headerSub').textContent=view==='workoutView'&&state.activeSession?'Workout in progress':'Strength + hypertrophy tracker'}
+function renderHome(){const grid=document.getElementById('dayGrid');grid.innerHTML='';Object.keys(routine).forEach(day=>{const b=document.createElement('button');b.className='day-card';const total=routine[day].reduce((a,x)=>a+x.sets,0);b.innerHTML=`<strong>${day}</strong><span>${routine[day].length} exercises · ${total} working sets</span>`;b.onclick=()=>startWorkout(day);grid.appendChild(b)});const rw=document.getElementById('resumeWrap');rw.classList.toggle('hidden',!state.activeSession);if(state.activeSession)document.getElementById('resumeBtn').textContent=`Resume ${state.activeSession.day}`;const l=document.getElementById('lastWorkout');const last=state.sessions[0];l.innerHTML=last?`<div class="summary-card"><div class="small">LAST WORKOUT</div><strong>${last.day}</strong><div class="small">${new Date(last.endTs).toLocaleDateString()} · ${fmtTime((new Date(last.endTs)-new Date(last.startTs))/1000)} · ${last.completedCount}/${routine[last.day].length} exercises</div></div>`:''}
+function startWorkout(day){if(state.activeSession&&!confirm(`A ${state.activeSession.day} workout is already active. Replace it?`))return;state.day=day;state.activeSession={day,startTs:new Date().toISOString(),completed:{},logs:[]};save();renderWorkout();show('workoutView')}
+function renderWorkout(){if(!state.activeSession){show('startView');renderHome();return}const s=state.activeSession,day=s.day;document.getElementById('sessionTitle').textContent=day;const completed=Object.keys(s.completed||{}).length,total=routine[day].length;document.getElementById('sessionProgress').textContent=`${completed} of ${total} exercises complete`;document.getElementById('progressFill').style.width=`${(completed/total)*100}%`;const list=document.getElementById('exerciseList');list.innerHTML='';routine[day].forEach(ex=>{const es=getExState(day,ex),key=exKey(day,ex.name),prev=latestHistory(day,ex.name,new Date(s.startTs).getTime()),isDone=!!s.completed[key];const card=document.createElement('div');card.className='exercise'+(isDone?' done':'');card.innerHTML=`<div class="exercise-head"><div><h2>${ex.name}</h2><div class="meta">${ex.sets} sets · ${ex.min}–${ex.max} reps · ${Math.round(ex.rest/60*10)/10} min rest</div></div><div class="weight">${weightLabel(ex,es.weight)}</div></div>`;const strip=document.createElement('div');strip.className='previous-strip';strip.innerHTML=prev?`Previous: <strong>${weightLabel(ex,prev.weight)} · ${prev.reps.join(' / ')}</strong> · ${new Date(prev.ts).toLocaleDateString()}`:'No previous workout logged yet.';card.appendChild(strip);const head=document.createElement('div');head.className='set-head';head.innerHTML='<div></div><div>Reps</div><div>Target</div><div>Previous</div>';card.appendChild(head);const sets=document.createElement('div');sets.className='sets';for(let i=0;i<ex.sets;i++){const row=document.createElement('div');row.className='set-row';const p=prev?.reps?.[i]??'—';row.innerHTML=`<div class="set-label">${i+1}</div><input inputmode="numeric" pattern="[0-9]*" class="rep-input" data-i="${i}" placeholder="${es.targets[i]}" ${isDone?'disabled':''}><div class="target">${es.targets[i]}</div><div class="prev">${p}</div>`;sets.appendChild(row)}card.appendChild(sets);const note=document.createElement('div');note.className='progress-note';note.innerHTML=`Goal: <strong>${es.targets.join(' / ')}</strong> at <strong>${weightLabel(ex,es.weight)}</strong>`;card.appendChild(note);const actions=document.createElement('div');actions.className='actions';const rest=document.createElement('button');rest.className='secondary';rest.textContent=`Rest ${fmtTime(ex.rest)}`;rest.onclick=()=>startRest(ex.rest,ex.name);actions.appendChild(rest);if(prev&&!isDone){const copy=document.createElement('button');copy.className='secondary';copy.textContent='Copy Last';copy.onclick=()=>{[...card.querySelectorAll('.rep-input')].forEach((input,i)=>input.value=prev.reps[i]??'')};actions.appendChild(copy)}const log=document.createElement('button');log.className='primary';log.textContent=isDone?'Completed':'Complete';log.disabled=isDone;log.onclick=()=>completeExercise(day,ex,card);actions.appendChild(log);card.appendChild(actions);list.appendChild(card)});save()}
+function completeExercise(day,ex,card){const es=getExState(day,ex);const reps=[...card.querySelectorAll('.rep-input')].map(x=>parseInt(x.value,10));const result=evaluate(ex,es,reps);if(!result.ok){toast(result.msg);return}const loggedWeight=es.weight;const rec={ts:new Date().toISOString(),day,name:ex.name,weight:loggedWeight,reps:[...reps],targets:[...es.targets]};state.history.unshift(rec);state.activeSession.logs.push(rec);state.activeSession.completed[exKey(day,ex.name)]=true;es.last=reps;if(result.newWeight!==undefined)es.weight=result.newWeight;if(result.newTargets)es.targets=result.newTargets;save();startRest(ex.rest,ex.name);toast(result.msg);renderWorkout()}
+function finishWorkout(){if(!state.activeSession)return;const s=state.activeSession,total=routine[s.day].length,done=Object.keys(s.completed||{}).length;if(done<total&&!confirm(`${done}/${total} exercises are complete. Finish anyway?`))return;s.endTs=new Date().toISOString();s.completedCount=done;state.sessions.unshift(s);state.sessions=state.sessions.slice(0,100);state.activeSession=null;state.restEnd=null;save();renderSummary(s);show('summaryView')}
+function renderSummary(s){const sec=(new Date(s.endTs)-new Date(s.startTs))/1000,sets=s.logs.reduce((n,x)=>n+x.reps.length,0),reps=s.logs.reduce((n,x)=>n+x.reps.reduce((a,b)=>a+b,0),0);document.getElementById('summaryContent').innerHTML=`<div class="hero"><h2>${s.day} Complete</h2><p>${new Date(s.endTs).toLocaleString()}</p></div><div class="summary-card"><div class="summary-grid"><div class="stat"><strong>${fmtTime(sec)}</strong><span>Duration</span></div><div class="stat"><strong>${sets}</strong><span>Sets</span></div><div class="stat"><strong>${reps}</strong><span>Total Reps</span></div></div></div>`}
+function renderHistory(){const h=document.getElementById('historyList');h.innerHTML='';if(!state.history.length){h.innerHTML='<p class="small">No completed exercises yet.</p>';return}state.history.slice(0,200).forEach(x=>{const d=document.createElement('div');d.className='history-item';d.innerHTML=`<div class="history-date">${x.name}</div><div>${x.weight?x.weight+' lb':'Bodyweight'} · ${x.reps.join(' / ')}</div><div class="small">${x.day} · ${new Date(x.ts).toLocaleString()}</div>`;h.appendChild(d)})}
+function startRest(seconds,name){state.restEnd={at:Date.now()+seconds*1000,name};save();updateRest()}
+function updateRest(){const box=document.getElementById('restBox');if(!state.restEnd){box.classList.add('hidden');return}const left=Math.ceil((state.restEnd.at-Date.now())/1000);if(left<=0){state.restEnd=null;save();box.classList.add('hidden');if(navigator.vibrate)navigator.vibrate([120,80,120]);toast('Rest complete');return}box.classList.remove('hidden');document.getElementById('restTime').textContent=fmtTime(left);document.getElementById('restTitle').textContent=`Rest after ${state.restEnd.name}`}
+function changeRest(delta){if(!state.restEnd)return;state.restEnd.at=Math.max(Date.now()+1000,state.restEnd.at+delta*1000);save();updateRest()}
+function tick(){if(state.activeSession){document.getElementById('duration').textContent=fmtTime((Date.now()-new Date(state.activeSession.startTs).getTime())/1000)}updateRest()}
+
+document.getElementById('resumeBtn').onclick=()=>{renderWorkout();show('workoutView')};document.getElementById('finishBtn').onclick=finishWorkout;document.getElementById('summaryDone').onclick=()=>{renderHome();show('startView')};document.getElementById('homeNav').onclick=()=>{renderHome();show('startView')};document.getElementById('workoutNav').onclick=()=>{if(state.activeSession){renderWorkout();show('workoutView')}else{renderHome();show('startView')}};document.getElementById('historyNav').onclick=()=>show('historyView');document.getElementById('settingsNav').onclick=()=>show('settingsView');document.getElementById('restMinus').onclick=()=>changeRest(-30);document.getElementById('restPlus').onclick=()=>changeRest(30);document.getElementById('restStop').onclick=()=>{state.restEnd=null;save();updateRest()};document.getElementById('exportBtn').onclick=()=>{document.getElementById('backupBox').value=JSON.stringify(state,null,2)};document.getElementById('importBtn').onclick=()=>{try{state=JSON.parse(document.getElementById('backupBox').value);save();renderHome();toast('Backup imported')}catch(e){toast('Invalid backup JSON')}};document.getElementById('resetBtn').onclick=()=>{if(confirm('Delete all workout data and progression history?')){localStorage.removeItem(KEY);localStorage.removeItem('progression-v1');location.reload()}};
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');renderHome();if(state.activeSession){document.getElementById('resumeWrap').classList.remove('hidden')}setInterval(tick,1000);tick();
+</script>
+</body>
+</html>
