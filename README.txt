@@ -1,31 +1,15 @@
-Progression Workout Tracker v2
+Progression Workout Tracker v4
 
-Local-first installable workout PWA.
+Changes in v4:
+- Upper A supersets are grouped and logged together:
+  * Dips + Pull-ups
+  * Cable Lateral Raise + Incline DB Curl
+- Entering reps visibly marks each set complete with a checkmark.
+- Tapping a workout opens a preview with Start Workout / Cancel before the timer begins.
+- Canceling an active workout does not add it to completed workout History.
+- Exercise progression is committed when the workout is finished, not when a workout is merely opened.
+- History is now a monthly calendar of completed workouts.
+- Tap a completed workout date to see the exercises, weights, reps, targets, and duration from that session.
+- Service worker caching updated to make future GitHub Pages updates easier to receive.
 
-Included:
-- Start Workout home screen for Upper A / Lower A / Upper B / Lower B
-- Persistent live workout-duration timer
-- Persistent rest timer with exercise-specific defaults and +/- 30 sec controls
-- Previous workout weight/reps shown on every exercise and previous reps beside each set
-- Automatic double progression, including heavy bench 215 -> 220 -> 225 lb at 5-7 reps
-- Balanced set-by-set target progression such as 11/10 -> 11/11 -> 12/11 -> 12/12
-- Exercise completion/progress bar
-- End-of-workout summary with duration, working sets, and total reps
-- Workout/exercise history
-- Local storage plus JSON backup/import
-- Offline support after first load
-
-To use on iPhone:
-1. Host these files on an HTTPS static host such as GitHub Pages, Netlify, Vercel, or Cloudflare Pages.
-2. Open the URL in Safari.
-3. Share -> Add to Home Screen.
-4. Launch Progression from the Home Screen.
-
-Existing v1 local workout/progression data is migrated automatically when possible.
-
-
-V3 UPDATE
-- Completed exercises keep today's actual reps visible.
-- Today's target remains visible after completion.
-- Next workout target is shown separately and no longer overwrites today's reps.
-- Completion toast now says 'Next workout' for clarity.
+Existing v3 local workout data remains in the same localStorage key and should carry forward automatically.
